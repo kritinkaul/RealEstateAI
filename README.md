@@ -1,6 +1,6 @@
 # RealEstateAI
 
-School / portfolio project: a fake “construction portfolio” dashboard where you can flip between sample jobs, see which tasks are late or over budget, run a risk readout, and ask short questions about the selected project.
+Portfolio project: a fake “construction portfolio” dashboard where you can flip between sample jobs, see which tasks are late or over budget, run a risk readout, and ask short questions about the selected project.
 
 There’s a Python API plus a React frontend. If you don’t plug in a Gemini key, it still runs using simple rule-based fallbacks so the UI isn’t empty.
 
