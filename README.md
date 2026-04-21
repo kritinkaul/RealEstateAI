@@ -1,50 +1,58 @@
 # RealEstateAI
 
-A FastAPI + React owner desk for construction portfolios: schedule exposure, budget variance, and Gemini-backed readouts and Q&A (with offline rules if the API is unavailable).
+School / portfolio project: a fake “construction portfolio” dashboard where you can flip between sample jobs, see which tasks are late or over budget, run a risk readout, and ask short questions about the selected project.
 
-The backend defaults to `gemini-2.5-flash-lite`. **Gemini 2.5 Flash** models use internal “thinking” tokens; this app sets `thinkingBudget: 0` on Flash/Flash-Lite so replies are not starved of output tokens.
+There’s a Python API plus a React frontend. If you don’t plug in a Gemini key, it still runs using simple rule-based fallbacks so the UI isn’t empty.
 
-## Run Locally
+## What it actually does
 
-Backend:
+- Pick a project, see tasks, delays, and rough cost vs budget  
+- Button to generate a readout (risks, predictions-ish stuff, suggested next steps)  
+- Little chat box that’s supposed to stay on project topics  
+
+## Run it locally
+
+**1. Backend** (terminal 1)
 
 ```bash
 cd backend
 python3 -m venv .venv
-source .venv/bin/activate
+source .venv/bin/activate   # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
-export GEMINI_API_KEY="your_key_here"
-export CORS_ORIGINS="https://real-estate-ai-frontend.vercel.app"
+export GEMINI_API_KEY="your_key"   # optional
 uvicorn app.main:app --reload --host 127.0.0.1 --port 8001
 ```
 
-After `pip install`, you can also start the API from the repo root with `npm run dev:api` (uses `backend/.venv`).
-
-Frontend (from repo root — recommended):
+**2. Frontend** (terminal 2, from repo root)
 
 ```bash
 npm install
 npm run dev
 ```
 
-Keep the **API running on port 8001** while you use the UI. In development, Vite proxies `/api` → `http://127.0.0.1:8001`, so the browser does not call port 8001 directly (fewer CORS/network issues).
+Open the link Vite prints (often port 5173). You need Node 18+.
 
-Or from `frontend/` only:
+The dev server sends API calls through `/api` to `localhost:8001`, so you don’t fight CORS while coding.
 
-```bash
-cd frontend
-npm install
-npm run dev
-```
+**Shortcut:** if `.venv` already exists, `npm run dev:api` from the root starts the backend the same way.
 
-Open the URL Vite prints (usually `http://localhost:5173/`). If port 5173 is in use, Vite picks the next free port. Use **Node 18+** (Vite 6).
+## Hosted version
 
-## API
+If you deploy: frontend and backend are on different URLs. Set `VITE_API_BASE_URL` on the frontend host to your public API URL (no slash at the end). First load after the API slept can be slow on free hosting—refresh once.
 
-- `GET /project` returns the sample project JSON
-- `GET /projects` returns the project portfolio
-- `GET /project/{project_id}` returns one project
-- `POST /analyze` returns structured readout sections
-- `POST /chat` answers project questions with project context
+## API (quick reference)
 
-If Gemini is not configured or the request fails, the backend falls back to deterministic local rules and includes a `serviceNote` on analyze when useful for debugging.
+| Method | Path | What |
+|--------|------|------|
+| GET | `/health` | sanity check |
+| GET | `/projects` | list projects |
+| GET | `/project` | default project |
+| GET | `/project/{id}` | one project |
+| POST | `/analyze` | readout JSON |
+| POST | `/chat` | short answer |
+
+No Gemini key → readout/chat still return something from the fallback logic; analyze might add a `serviceNote` if something errored.
+
+## Data
+
+Sample projects live in `backend/data/projects.json`. It’s all static JSON for the demo.
