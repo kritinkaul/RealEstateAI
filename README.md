@@ -14,6 +14,7 @@ python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 export GEMINI_API_KEY="your_key_here"
+export CORS_ORIGINS="https://real-estate-ai-frontend.vercel.app"
 uvicorn app.main:app --reload --host 127.0.0.1 --port 8001
 ```
 

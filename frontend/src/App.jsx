@@ -34,8 +34,12 @@ function App() {
   const [analysisError, setAnalysisError] = useState("");
   const [isProjectLoading, setIsProjectLoading] = useState(true);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [loadingHint, setLoadingHint] = useState("");
 
   useEffect(() => {
+    const hintTimer = window.setTimeout(() => {
+      setLoadingHint("If this is the first load on free tier hosting, the API may be waking up.");
+    }, 3500);
     getProjects()
       .then((payload) => {
         const loadedProjects = payload.projects || [];
@@ -43,7 +47,10 @@ function App() {
         setSelectedProjectId(loadedProjects[0]?.id || "");
       })
       .catch((error) => setProjectError(error.message))
-      .finally(() => setIsProjectLoading(false));
+      .finally(() => {
+        window.clearTimeout(hintTimer);
+        setIsProjectLoading(false);
+      });
   }, []);
 
   const project = useMemo(
@@ -81,6 +88,7 @@ function App() {
       <main className="shell loading-shell">
         <div className="orbital-loader" />
         <p>Loading portfolio…</p>
+        {loadingHint && <p style={{ marginTop: 0, maxWidth: 420, lineHeight: 1.6 }}>{loadingHint}</p>}
       </main>
     );
   }
@@ -89,32 +97,47 @@ function App() {
     const isNetwork =
       /failed to fetch|networkerror|load failed/i.test(projectError || "") ||
       projectError === "Failed to fetch";
+    const isMissingVercelEnv = /VITE_API_BASE_URL/i.test(projectError || "");
     return (
       <main className="shell centered-state">
         <AlertTriangle size={34} />
         <h1>Project data could not load</h1>
         <p>{projectError || "No projects were found."}</p>
-        {isNetwork && (
-          <p style={{ maxWidth: 520, marginTop: 12, lineHeight: 1.6, color: "var(--ink-muted, #5c5852)" }}>
-            Start the API on port <strong>8001</strong>, then refresh. Example:
+        {isMissingVercelEnv && (
+          <p style={{ maxWidth: 540, marginTop: 12, lineHeight: 1.6, color: "var(--ink-muted, #5c5852)" }}>
+            On Vercel, add <strong>VITE_API_BASE_URL</strong> = your Render API URL (e.g.{" "}
+            <code style={{ fontSize: "0.88em" }}>https://your-api.onrender.com</code>), then{" "}
+            <strong>Redeploy</strong>. The UI cannot guess your API host in production.
           </p>
         )}
-        {isNetwork && (
-          <pre
-            style={{
-              marginTop: 8,
-              padding: 12,
-              borderRadius: 8,
-              background: "rgba(26,24,22,0.06)",
-              fontSize: "0.82rem",
-              textAlign: "left",
-              maxWidth: 560,
-              overflow: "auto",
-            }}
-          >
-            cd backend{"\n"}
-            .venv/bin/uvicorn app.main:app --reload --host 127.0.0.1 --port 8001
-          </pre>
+        {isNetwork && !isMissingVercelEnv && import.meta.env.DEV && (
+          <>
+            <p style={{ maxWidth: 520, marginTop: 12, lineHeight: 1.6, color: "var(--ink-muted, #5c5852)" }}>
+              Start the API on port <strong>8001</strong>, then refresh. Example:
+            </p>
+            <pre
+              style={{
+                marginTop: 8,
+                padding: 12,
+                borderRadius: 8,
+                background: "rgba(26,24,22,0.06)",
+                fontSize: "0.82rem",
+                textAlign: "left",
+                maxWidth: 560,
+                overflow: "auto",
+              }}
+            >
+              cd backend{"\n"}
+              .venv/bin/uvicorn app.main:app --reload --host 127.0.0.1 --port 8001
+            </pre>
+          </>
+        )}
+        {isNetwork && !isMissingVercelEnv && import.meta.env.PROD && (
+          <p style={{ maxWidth: 540, marginTop: 12, lineHeight: 1.6, color: "var(--ink-muted, #5c5852)" }}>
+            Confirm <strong>Render</strong> is running (open your API <code>/health</code>),{" "}
+            <strong>CORS_ORIGINS</strong> on Render includes this Vercel URL, and{" "}
+            <strong>VITE_API_BASE_URL</strong> in Vercel exactly matches your Render API origin.
+          </p>
         )}
       </main>
     );

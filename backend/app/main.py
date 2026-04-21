@@ -1,3 +1,4 @@
+import os
 from typing import Any
 
 from dotenv import load_dotenv
@@ -14,11 +15,31 @@ load_dotenv()
 app = FastAPI(title="RealEstateAI API", version="0.1.0")
 ai_client = GeminiClient()
 
-# Local dev: any Vite port (5173, 5174, …) and either localhost or 127.0.0.1
+def _parse_cors_origins(raw: str | None) -> list[str]:
+    if not raw:
+        return []
+    parts = [item.strip() for item in raw.split(",")]
+    return [item.rstrip("/") for item in parts if item]
+
+
+cors_origins = _parse_cors_origins(os.getenv("CORS_ORIGINS"))
+
+# Browser preflight must see Access-Control-Allow-Origin for the *frontend* host (e.g. Vercel).
+# - `cors_origins`: optional extra origins from CORS_ORIGINS (custom domains, etc.)
+# - Regex: local Vite + any *.vercel.app deployment (production + preview) so Render works even
+#   if CORS_ORIGINS was not set in the dashboard.
+# - allow_credentials=False: we use JSON fetch without cookies; fewer CORS edge cases.
+_LOCAL_OR_VERCEL = (
+    r"^https?://(localhost|127\.0\.0\.1)(:\d+)?$"
+    r"|"
+    r"^https://[a-zA-Z0-9.-]+\.vercel\.app$"
+)
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origin_regex=r"https?://(localhost|127\.0\.0\.1)(:\d+)?$",
-    allow_credentials=True,
+    allow_origins=cors_origins,
+    allow_origin_regex=_LOCAL_OR_VERCEL,
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
