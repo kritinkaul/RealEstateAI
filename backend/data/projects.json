@@ -1,0 +1,67 @@
+{
+  "projects": [
+    {
+      "id": "ridgeview-tower",
+      "name": "Ridgeview Mixed-Use Development",
+      "location": "Austin, TX",
+      "assetType": "Mixed-use tower",
+      "startDate": "2026-03-01",
+      "targetCompletion": "2026-12-18",
+      "overallBudget": 18400000,
+      "priority": "High",
+      "imageUrl": "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=1400&q=80",
+      "tasks": [
+        {"id": "entitlements", "name": "Finalize zoning entitlements", "phase": "Preconstruction", "deadline": "2026-04-25", "status": "on track", "dependencies": [], "budget": 180000, "actualCost": 162000, "contractor": "UrbanPath Advisors", "notes": "Planning staff confirmed no additional neighborhood review is required."},
+        {"id": "design-docs", "name": "Complete architectural construction documents", "phase": "Design", "deadline": "2026-05-03", "status": "on track", "dependencies": ["entitlements"], "budget": 420000, "actualCost": 398000, "contractor": "Northline Studio", "notes": "Structural sheets are coordinated; final MEP comments are in progress."},
+        {"id": "permit-review", "name": "City permit review and comments", "phase": "Permitting", "deadline": "2026-05-17", "status": "delayed", "dependencies": ["design-docs"], "budget": 95000, "actualCost": 118000, "contractor": "Civic Permit Services", "notes": "Reviewer requested utility easement clarifications before approval."},
+        {"id": "site-clearing", "name": "Site clearing and abatement", "phase": "Site Work", "deadline": "2026-05-28", "status": "on track", "dependencies": ["entitlements"], "budget": 610000, "actualCost": 585000, "contractor": "IronGate Environmental", "notes": "Hazardous material closeout packet is expected this week."},
+        {"id": "utility-relocation", "name": "Utility relocation and temporary power", "phase": "Site Work", "deadline": "2026-06-08", "status": "delayed", "dependencies": ["site-clearing", "permit-review"], "budget": 540000, "actualCost": 623000, "contractor": "MetroGrid Utilities", "notes": "Crew availability is constrained by the pending permit response."},
+        {"id": "foundation", "name": "Foundation excavation and pier drilling", "phase": "Structural", "deadline": "2026-06-24", "status": "delayed", "dependencies": ["utility-relocation"], "budget": 1750000, "actualCost": 1965000, "contractor": "Bedrock Civil", "notes": "Drilling rig is reserved, but standby charges begin if access slips."},
+        {"id": "steel-procurement", "name": "Structural steel procurement", "phase": "Procurement", "deadline": "2026-07-06", "status": "on track", "dependencies": ["design-docs"], "budget": 2100000, "actualCost": 2050000, "contractor": "Atlas Steel Supply", "notes": "Mill order is locked; shop drawings are tracking to planned release."},
+        {"id": "podium-framing", "name": "Podium framing", "phase": "Structural", "deadline": "2026-08-14", "status": "on track", "dependencies": ["foundation", "steel-procurement"], "budget": 2400000, "actualCost": 2360000, "contractor": "Keystone Builders", "notes": "Sequencing depends on foundation access and steel delivery."},
+        {"id": "mep-rough", "name": "MEP rough-in", "phase": "MEP", "deadline": "2026-09-22", "status": "on track", "dependencies": ["podium-framing"], "budget": 1850000, "actualCost": 1725000, "contractor": "BrightLine MEP", "notes": "Long-lead switchgear is tracking to the procurement plan."},
+        {"id": "fire-inspection", "name": "Fire marshal rough inspection", "phase": "Inspections", "deadline": "2026-10-02", "status": "on track", "dependencies": ["mep-rough"], "budget": 65000, "actualCost": 51000, "contractor": "City Fire Marshal", "notes": "Inspection slot should be reserved after MEP rough-in reaches 80%."},
+        {"id": "interiors", "name": "Tenant interior buildout", "phase": "Interiors", "deadline": "2026-11-13", "status": "on track", "dependencies": ["fire-inspection"], "budget": 3300000, "actualCost": 3185000, "contractor": "Vantage Interiors", "notes": "Mockup review is complete; finish procurement remains active."},
+        {"id": "final-co", "name": "Final inspection and certificate of occupancy", "phase": "Closeout", "deadline": "2026-12-11", "status": "on track", "dependencies": ["interiors"], "budget": 90000, "actualCost": 84000, "contractor": "City Building Department", "notes": "Certificate package will require all trade closeout letters."}
+      ]
+    },
+    {
+      "id": "harbor-lofts",
+      "name": "Harbor Lofts Adaptive Reuse",
+      "location": "Tampa, FL",
+      "assetType": "Residential conversion",
+      "startDate": "2026-02-12",
+      "targetCompletion": "2026-10-30",
+      "overallBudget": 12600000,
+      "priority": "Medium",
+      "imageUrl": "https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=1400&q=80",
+      "tasks": [
+        {"id": "historic-review", "name": "Historic facade review", "phase": "Approvals", "deadline": "2026-04-28", "status": "on track", "dependencies": [], "budget": 85000, "actualCost": 79000, "contractor": "Cobalt Preservation", "notes": "Facade mockups were accepted with minor storefront revisions."},
+        {"id": "asbestos-abatement", "name": "Asbestos abatement", "phase": "Site Work", "deadline": "2026-05-12", "status": "delayed", "dependencies": ["historic-review"], "budget": 360000, "actualCost": 442000, "contractor": "SafeBuilt Environmental", "notes": "Additional pipe wrap was discovered in the east stairwell."},
+        {"id": "structural-retrofit", "name": "Structural retrofit package", "phase": "Structural", "deadline": "2026-06-18", "status": "on track", "dependencies": ["asbestos-abatement"], "budget": 1450000, "actualCost": 1395000, "contractor": "AnchorFrame Construction", "notes": "Steel embeds are procured and ready for release after abatement clearance."},
+        {"id": "window-restoration", "name": "Window restoration and waterproofing", "phase": "Envelope", "deadline": "2026-07-02", "status": "delayed", "dependencies": ["historic-review"], "budget": 980000, "actualCost": 1075000, "contractor": "ClearSpan Envelope", "notes": "Custom sash profiles added three weeks to fabrication."},
+        {"id": "unit-framing", "name": "Unit framing and corridor layout", "phase": "Interiors", "deadline": "2026-08-06", "status": "on track", "dependencies": ["structural-retrofit"], "budget": 1620000, "actualCost": 1585000, "contractor": "Vesta Build Group", "notes": "Field layout is ready; access will depend on abatement clearance."},
+        {"id": "elevator-modernization", "name": "Elevator modernization", "phase": "Vertical Transport", "deadline": "2026-09-10", "status": "on track", "dependencies": ["structural-retrofit"], "budget": 720000, "actualCost": 705000, "contractor": "RiseLine Elevators", "notes": "Controller shipment is tracking to the planned install window."}
+      ]
+    },
+    {
+      "id": "mesa-industrial",
+      "name": "Mesa Ridge Industrial Park",
+      "location": "Phoenix, AZ",
+      "assetType": "Light industrial campus",
+      "startDate": "2026-01-20",
+      "targetCompletion": "2026-11-20",
+      "overallBudget": 22100000,
+      "priority": "High",
+      "imageUrl": "https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&w=1400&q=80",
+      "tasks": [
+        {"id": "grading", "name": "Mass grading and pad certification", "phase": "Civil", "deadline": "2026-04-30", "status": "on track", "dependencies": [], "budget": 1850000, "actualCost": 1810000, "contractor": "Sonoran Civil", "notes": "Pad B has passed compaction; Pad C certification is scheduled."},
+        {"id": "stormwater", "name": "Stormwater basin and drainage tie-ins", "phase": "Civil", "deadline": "2026-05-18", "status": "delayed", "dependencies": ["grading"], "budget": 760000, "actualCost": 812000, "contractor": "DesertFlow Infrastructure", "notes": "County requested revised calculations after the basin depth change."},
+        {"id": "slab", "name": "Warehouse slab placement", "phase": "Structural", "deadline": "2026-06-22", "status": "on track", "dependencies": ["stormwater"], "budget": 2800000, "actualCost": 2715000, "contractor": "PrimePour Concrete", "notes": "Concrete supplier has reserved the first placement window."},
+        {"id": "tilt-panels", "name": "Tilt-up panel casting and erection", "phase": "Structural", "deadline": "2026-08-07", "status": "on track", "dependencies": ["slab"], "budget": 4100000, "actualCost": 3980000, "contractor": "Apex Tiltworks", "notes": "Panel shop drawings are approved."},
+        {"id": "dock-equipment", "name": "Dock equipment procurement", "phase": "Procurement", "deadline": "2026-08-20", "status": "delayed", "dependencies": ["slab"], "budget": 640000, "actualCost": 705000, "contractor": "BayLine Dock Systems", "notes": "Leveler lead times moved after supplier allocation changes."},
+        {"id": "tenant-power", "name": "Tenant power distribution", "phase": "MEP", "deadline": "2026-09-18", "status": "on track", "dependencies": ["tilt-panels", "dock-equipment"], "budget": 1320000, "actualCost": 1258000, "contractor": "CopperPeak Electric", "notes": "Transformer pad is ready; switchboard submittal is under review."}
+      ]
+    }
+  ]
+}

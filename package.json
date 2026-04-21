@@ -1,0 +1,11 @@
+{
+  "name": "realestateai",
+  "private": true,
+  "workspaces": ["frontend"],
+  "scripts": {
+    "dev": "npm run dev -w realestateai-frontend",
+    "dev:api": "cd backend && .venv/bin/uvicorn app.main:app --reload --host 127.0.0.1 --port 8001",
+    "build": "npm run build -w realestateai-frontend",
+    "preview": "npm run preview -w realestateai-frontend"
+  }
+}
